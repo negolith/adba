@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 #
 # This file is part of aDBa.
 #
@@ -18,7 +19,7 @@ import sys
 import os
 import getopt
 from test_lib import *
-import threading 
+import threading
 
 ####################################################
 # here starts the stuff that is interesting for you
@@ -26,7 +27,8 @@ import threading
 
 # you only need to import the module
 import adba
+
 connection = adba.Connection()
 connection.auth(user, pw)
-anime = adba.Anime(connection,name="Bleach",load=True);
-anime.add_notification();
+anime = adba.Anime(connection, name="Bleach", load=True)
+anime.add_notification()

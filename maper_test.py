@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 #
 # This file is part of aDBa.
 #
@@ -19,13 +20,10 @@ import os
 import getopt
 from test_lib import *
 
-
-
 from adba.aniDBmaper import AniDBMaper
 
-
 maper = AniDBMaper()
-#maper.checkMapping(True)
+# maper.checkMapping(True)
 
 
 amask = ["aid"]

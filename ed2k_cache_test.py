@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 #
 # This file is part of aDBa.
 #
@@ -21,8 +22,6 @@ import pickle
 from test_lib import *
 from adba.aniDBfileInfo import *
 
-
-
 ####################################################
 # here starts the stuff that is interresting for you
 ####################################################
@@ -31,36 +30,32 @@ from adba.aniDBfileInfo import *
 import adba
 
 # lets see the version
-print("Version:",adba.version)
-#print(sys.executable)
+print("Version:", adba.version)
+# print(sys.executable)
 
-#first part of this code if proof of concept for hashing files into the pickle and testing efficiency of calling pickle
-#should be commented out in general
+# first part of this code if proof of concept for hashing files into the pickle and testing efficiency of calling pickle
+# should be commented out in general
 
-#takes a root directory and recursively hashes all files and stores them in the cache
-#subsequent runs should be very fast
-testRootDir=sys.argv[1]
+# takes a root directory and recursively hashes all files and stores them in the cache
+# subsequent runs should be very fast
+testRootDir = sys.argv[1]
 
-fileCount=0
-filesToHash=400
-ED2KCache={}
+fileCount = 0
+filesToHash = 400
+ED2KCache = {}
 for dirPath, dirNames, fileNames in os.walk(testRootDir):
-	for fileName in fileNames:
-		currentFilePath=os.path.normpath(dirPath + os.sep + fileName)
-		eD2KHash=get_ED2K(currentFilePath)
-		print(currentFilePath,eD2KHash)
-		ED2KCache[fileName]=(eD2KHash)
-		fileCount+=1
-		if(fileCount>filesToHash):
-			break
-	if(fileCount>filesToHash):
-		break
-
-
-
+    for fileName in fileNames:
+        currentFilePath = os.path.normpath(dirPath + os.sep + fileName)
+        eD2KHash = get_ED2K(currentFilePath)
+        print(currentFilePath, eD2KHash)
+        ED2KCache[fileName] = eD2KHash
+        fileCount += 1
+        if fileCount > filesToHash:
+            break
+    if fileCount > filesToHash:
+        break
 
 for key in ED2KCache:
-	print(key,ED2KCache[key])
+    print(key, ED2KCache[key])
 
 print(len(ED2KCache))
-

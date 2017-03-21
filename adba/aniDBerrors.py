@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 #
 # This file is part of aDBa.
 #
@@ -15,20 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with aDBa.  If not, see <http://www.gnu.org/licenses/>.
 
+
 class AniDBError(Exception):
-	pass
+    pass
+
 
 class AniDBIncorrectParameterError(AniDBError):
-	pass
+    pass
+
 
 class AniDBCommandTimeoutError(AniDBError):
-	pass
+    pass
+
 
 class AniDBMustAuthError(AniDBError):
-	pass
-	
+    pass
+
+
 class AniDBPacketCorruptedError(AniDBError):
-	pass
+    pass
+
 
 class AniDBInternalError(AniDBError):
-	pass
+    pass
