@@ -114,7 +114,7 @@ if args.command in ['mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields'
 		connection.auth(args.username, args.password)
 	except Exception as e:
 		print('Exception: %s', e)
-		logging.debug('Exception Occured: '+str(e))
+		logging.debug('Exception Occurred: '+str(e))
 
 # Execute command
 if args.command == 'hash':
@@ -134,19 +134,19 @@ elif args.command == 'mylistadd':
 				episode = adba.Episode(connection, filePath=thisFile)
 			except Exception as e:
 				print('Exception: %s', e)
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				continue
 			try:
 				episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
 				print(thisFile + " successfully edited in AniDB MyList.")
 			except Exception as e:
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				try:
 					episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
 					print(thisFile + " successfully added to AniDB MyList.")
 				except Exception as e:
 					print('Exception: %s', e)
-					logging.debug('Exception Occured: '+str(e))
+					logging.debug('Exception Occurred: '+str(e))
 					continue
 elif args.command == 'mylistdel':
 	# Delete the file
@@ -156,14 +156,14 @@ elif args.command == 'mylistdel':
 				episode = adba.Episode(connection, filePath=thisFile)
 			except Exception as e:
 				print('Exception: %s', e)
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				continue
 			try:
 				episode.delete_from_mylist()
 				print(thisFile + " successfully removed from AniDB MyList.")
 			except Exception as e:
 				print('Exception: %s', e)
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				continue
 elif args.command == 'mylistaddwithfields':
 	# Parse requested field(s)
@@ -181,19 +181,19 @@ elif args.command == 'mylistaddwithfields':
 				episode = adba.Episode(connection, filePath=thisFile, load=True, paramsF=requestF, paramsA=requestA)
 			except Exception as e:
 				print('Exception: %s', e)
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				continue
 			try:
 				episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
 				print(thisFile + " successfully edited in AniDB MyList.")
 			except Exception as e:
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				try:
 					episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
 					print(thisFile + " successfully added to AniDB MyList.")
 				except Exception as e:
 					print('Exception: %s', e)
-					logging.debug('Exception Occured: '+str(e))
+					logging.debug('Exception Occurred: '+str(e))
 					continue
 			print("filename\t" + thisFile)
 			for field in requestedFields:
@@ -215,7 +215,7 @@ elif args.command == 'getfields':
 				episode = adba.Episode(connection, filePath=thisFile, load=True, paramsF=requestF, paramsA=requestA)
 			except Exception as e:
 				print('Exception: %s', e)
-				logging.debug('Exception Occured: '+str(e))
+				logging.debug('Exception Occurred: '+str(e))
 				continue
 			print("filename\t" + thisFile)
 			for field in requestedFields:
