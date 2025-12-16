@@ -58,7 +58,8 @@ if args.login:
 		args.password = config['DEFAULT']['password']
 	except Exception as e:
 		print('Exception:', e)
-		input("Press Enter to continue")
+		if args.wait_input:
+			input("Press Enter to continue")
 		sys.exit(1)
 
 if args.logging:
@@ -72,14 +73,16 @@ if args.out_file:
 if args.command == 'logout':
 	connection = adba.Connection(commandDelay=2.1)
 	connection.logout()
-	input("Press Enter to continue")
+	if args.wait_input:
+		input("Press Enter to continue")
 	sys.exit(0)
 
 # Check if fields are required
 if args.command in ['mylistaddwithfields', 'getfields']:
 	if not args.fields:
 		print("Fields to retrieve are required for " + args.command + ".")
-		input("Press Enter to continue")
+		if args.wait_input:
+			input("Press Enter to continue")
 		sys.exit(0)
 
 # Convert state to UDP
@@ -113,14 +116,16 @@ for entry in list(args.file):
 if args.command in ['hash', 'mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields']:
 	if len(fileList) == 0:
 		print("Files and/or directories containing valid files are required for " + args.command + ".")
-		input("Press Enter to continue")
+		if args.wait_input:
+			input("Press Enter to continue")
 		sys.exit(0)
 
 # Check if login is required and create connection if have login credentials
 if args.command in ['mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields']:
 	if not args.username or not args.password:
 		print("User and password required for " + args.command + ".")
-		input("Press Enter to continue")
+		if args.wait_input:
+			input("Press Enter to continue")
 		sys.exit(0)
 	if args.fast_command_delay:
 		connection = adba.Connection(commandDelay=2.1)
