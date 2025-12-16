@@ -23,6 +23,7 @@ import os
 import sys
 import xml.etree.cElementTree as etree
 from functools import reduce
+from Crypto.Hash import MD4
 
 
 # http://www.radicand.org/blog/orz/2010/2/21/edonkey2000-hash-in-python/
@@ -30,7 +31,7 @@ def get_ED2K(filePath,forceHash=False,cacheLocation=os.path.normpath(sys.path[0]
 	""" Returns the ed2k hash of a given file."""
 	if not filePath:
 		return None
-	md4 = hashlib.new('md4').copy
+	md4 = MD4.new
 	ed2kChunkSize=9728000
 	try:
 		get_ED2K.ED2KCache
