@@ -264,7 +264,7 @@ class Connection(threading.Thread):
 			self.lastAuth = time()
 			logging.debug('No valid session, so authenticating')
 			try:
-				self.handle(AuthCommand(username, password, 3, self.clientname, self.clientver, nat, 1, 'utf8', mtu), callback)
+				AuthResponse=self.handle(AuthCommand(username, password, 3, self.clientname, self.clientver, nat, 1, 'utf8', mtu), callback)
 			except Exception as e:
 				logging.debug('Auth command with exception %s', e)
 				# we force a config file with logged out to ensure a known state if an exception occurs, forcing us to log in again
@@ -277,6 +277,7 @@ class Connection(threading.Thread):
 			config['DEFAULT'] ={'loggedin': 'yes', 'sessionkey': self.link.session, 'lastcommandtime': repr(time())}
 			with open(self.SessionFile, 'w') as configfile:
 				config.write(configfile)
+			return AuthResponse
 		return
 
 	def logout(self, cutConnection=True, callback=None):

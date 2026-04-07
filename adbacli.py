@@ -57,7 +57,7 @@ if args.login:
 		args.username = config['DEFAULT']['user']
 		args.password = config['DEFAULT']['password']
 	except Exception as e:
-		print('Exception:', e)
+		print("Exception:", e)
 		if args.wait_input:
 			input("Press Enter to continue")
 		sys.exit(1)
@@ -80,7 +80,7 @@ if args.command == 'logout':
 # Check if fields are required
 if args.command in ['mylistaddwithfields', 'getfields']:
 	if not args.fields:
-		print("Fields to retrieve are required for " + args.command + ".")
+		print(f"Fields to retrieve are required for {args.command}.")
 		if args.wait_input:
 			input("Press Enter to continue")
 		sys.exit(0)
@@ -115,7 +115,7 @@ for entry in list(args.file):
 # Check if files are required
 if args.command in ['hash', 'mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields']:
 	if len(fileList) == 0:
-		print("Files and/or directories containing valid files are required for " + args.command + ".")
+		print(f"Files and/or directories containing valid files are required for {args.command}.")
 		if args.wait_input:
 			input("Press Enter to continue")
 		sys.exit(0)
@@ -123,7 +123,7 @@ if args.command in ['hash', 'mylistadd', 'mylistdel', 'mylistaddwithfields', 'ge
 # Check if login is required and create connection if have login credentials
 if args.command in ['mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields']:
 	if not args.username or not args.password:
-		print("User and password required for " + args.command + ".")
+		print(f"User and password required for {args.command}.")
 		if args.wait_input:
 			input("Press Enter to continue")
 		sys.exit(0)
@@ -132,9 +132,11 @@ if args.command in ['mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields'
 	else:
 		connection = adba.Connection()
 	try:
-		connection.auth(args.username, args.password)
+		response = connection.auth(args.username, args.password)
+		if response:
+			print(f"{response.rescode} {response.codestr}")
 	except Exception as e:
-		print('Exception:', e)
+		print("Exception:", e)
 
 # Execute command
 if args.command == 'hash':
@@ -149,17 +151,17 @@ elif args.command == 'mylistadd':
 			try:
 				episode = adba.Episode(connection, filePath=thisFile)
 			except Exception as e:
-				print('Exception:', e)
+				print("Exception:", e)
 				continue
 			try:
-				episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-				print(os.path.basename(thisFile) + " successfully edited in AniDB MyList.")
+				response = episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+				print(f"{response.rescode} {response.codestr}")
 			except:
 				try:
-					episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-					print(os.path.basename(thisFile) + " successfully added to AniDB MyList.")
+					response = episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+					print(f"{response.rescode} {response.codestr}")
 				except Exception as e:
-					print('Exception:', e)
+					print("Exception:", e)
 					continue
 elif args.command == 'mylistdel':
 	# Delete the file
@@ -168,17 +170,17 @@ elif args.command == 'mylistdel':
 			try:
 				episode = adba.Episode(connection, filePath=thisFile)
 			except Exception as e:
-				print('Exception:', e)
+				print("Exception:", e)
 				continue
 			try:
-				episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-				print(os.path.basename(thisFile) + " successfully edited as deleted from AniDB MyList.")
+				response = episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+				print(f"{response.rescode} {response.codestr}")
 			except Exception as e:
 				try:
-					episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-					print(os.path.basename(thisFile) + " successfully added as deleted to AniDB MyList.")
+					response = episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+					print(f"{response.rescode} {response.codestr}")
 				except Exception as e:
-					print('Exception:', e)
+					print("Exception:", e)
 					continue
 elif args.command == 'mylistaddwithfields':
 	# Parse requested field(s)
@@ -195,21 +197,21 @@ elif args.command == 'mylistaddwithfields':
 			try:
 				episode = adba.Episode(connection, filePath=thisFile, load=True, paramsF=requestF, paramsA=requestA)
 			except Exception as e:
-				print('Exception:', e)
+				print("Exception:", e)
 				continue
 			try:
-				episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-				print(os.path.basename(thisFile) + " successfully edited in AniDB MyList.")
+				response = episode.edit_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+				print(f"{response.rescode} {response.codestr}")
 			except:
 				try:
-					episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
-					print(os.path.basename(thisFile) + " successfully added to AniDB MyList.")
+					response = episode.add_to_mylist(state=args.state, viewed=viewed, source=args.source, storage=args.storage, other=args.other)
+					print(f"{response.rescode} {response.codestr}")
 				except Exception as e:
-					print('Exception:', e)
+					print("Exception:", e)
 					continue
-			print("filename\t" + thisFile)
+			print(f"filename\t{thisFile}")
 			for field in requestedFields:
-				print(field + "\t" + str(getattr(episode, field)))
+				print(f"{field}\t{str(getattr(episode, field))}")
 			print("")
 elif args.command == 'getfields':
 	# Parse requested field(s)
@@ -226,11 +228,11 @@ elif args.command == 'getfields':
 			try:
 				episode = adba.Episode(connection, filePath=thisFile, load=True, paramsF=requestF, paramsA=requestA)
 			except Exception as e:
-				print('Exception:', e)
+				print("Exception:", e)
 				continue
-			print("filename\t" + thisFile)
+			print(f"filename\t{thisFile}")
 			for field in requestedFields:
-				print(field + "\t" + str(getattr(episode, field)))
+				print(f"{field}\t{str(getattr(episode, field))}")
 			print("")
 elif args.command == 'listfields':
 	# Print all the possible field(s) that can be requested, remove blacklisted fields
@@ -239,7 +241,7 @@ elif args.command == 'listfields':
 	maperFileA = list(maper.getFileMapA())
 	allFields = maperFileF + maperFileA
 	validFields = sorted([field for field in allFields if field not in blacklistFields])
-	print('\n'.join(validFields))
+	print("\n".join(validFields))
 
 connection.stayloggedin()
 

@@ -279,12 +279,13 @@ class Episode(aniDBabstractObject):
 		if self.filePath and not (self.ed2k or self.size):
 			(self.ed2k, self.size) = self._calculate_file_stuff(self.filePath)
 		try:
-			self.aniDB.mylistadd(size=self.size, ed2k=self.ed2k, state=state, viewed=viewed, source=source, storage=storage, other=other)
+			AddResponse=self.aniDB.mylistadd(size=self.size, ed2k=self.ed2k, state=state, viewed=viewed, source=source, storage=storage, other=other)
 		except Exception as e :
 			logging.exception("Exception: %s", e)
 		else:
 			# TODO: add the name or something
 			logging.info("Added the episode to anidb")
+		return AddResponse
 
 	def edit_to_mylist(self, state=None, viewed=None, source=None, storage=None, other=None):
 		"""
@@ -314,16 +315,18 @@ class Episode(aniDBabstractObject):
 			raise AniDBError("Attempted to edit file without adding")
 		else:
 			logging.info("Edited the episode in anidb")
+		return EditResponse
 
 	def delete_from_mylist(self):
 		if self.filePath and not (self.ed2k or self.size):
 			(self.ed2k, self.size) = self._calculate_file_stuff(self.filePath)
 		try:
-			self.aniDB.mylistdel(size=self.size, ed2k=self.ed2k)
+			DeleteResponse=self.aniDB.mylistdel(size=self.size, ed2k=self.ed2k)
 		except Exception as e:
 			logging.exception("Exception: %s", e)
 		else:
 			logging.info("Deleted the episode from anidb")
+		return DeleteResponse
 
 	def _calculate_file_stuff(self, filePath):
 		if not filePath:
