@@ -184,13 +184,13 @@ elif args.command == 'mylistdel':
 					continue
 elif args.command == 'mylistaddwithfields':
 	# Parse requested field(s)
-	requestedFields = list(args.fields.lower().split(','))
+	requestedFields = set(args.fields.lower().split(','))
 	# Separate fields by request type
 	maper = adba.aniDBmaper.AniDBMaper()
 	maperFileF = set(maper.getFileMapF())
 	maperFileA = set(maper.getFileMapA())
-	requestF = list(maperFileF & set(requestedFields))
-	requestA = list(maperFileA & set(requestedFields))
+	requestF = set.intersection(maperFileF & requestedFields)
+	requestA = set.intersection(maperFileA & requestedFields)
 	# Add/edit the file to AniDB and print the retrieved field(s)
 	if connection.authed():
 		for thisFile in fileList:
@@ -209,19 +209,22 @@ elif args.command == 'mylistaddwithfields':
 				except Exception as e:
 					print("Exception:", e)
 					continue
-			print(f"filename\t{thisFile}")
-			for field in requestedFields:
-				print(f"{field}\t{str(getattr(episode, field))}")
-			print("")
+			response = getattr(episode, "rawData")
+			print(f"{response.rescode} {response.codestr}")
+			if response.codestr != "NO_SUCH_FILE":
+				print(f"filename\t{thisFile}")
+				for field in requestedFields:
+					print(f"{field}\t{str(getattr(episode, field))}")
+				print("")
 elif args.command == 'getfields':
 	# Parse requested field(s)
-	requestedFields = list(args.fields.lower().split(','))
+	requestedFields = set(args.fields.lower().split(','))
 	# Separate fields by request type
 	maper = adba.aniDBmaper.AniDBMaper()
 	maperFileF = set(maper.getFileMapF())
 	maperFileA = set(maper.getFileMapA())
-	requestF = list(maperFileF & set(requestedFields))
-	requestA = list(maperFileA & set(requestedFields))
+	requestF = set.intersection(maperFileF & requestedFields)
+	requestA = set.intersection(maperFileA & requestedFields)
 	# Retrieve the requested field(s)
 	if connection.authed():
 		for thisFile in fileList:
@@ -230,10 +233,13 @@ elif args.command == 'getfields':
 			except Exception as e:
 				print("Exception:", e)
 				continue
-			print(f"filename\t{thisFile}")
-			for field in requestedFields:
-				print(f"{field}\t{str(getattr(episode, field))}")
-			print("")
+			response = getattr(episode, "rawData")
+			print(f"{response.rescode} {response.codestr}")
+			if response.codestr != "NO_SUCH_FILE":
+				print(f"filename\t{thisFile}")
+				for field in requestedFields:
+					print(f"{field}\t{str(getattr(episode, field))}")
+				print("")
 elif args.command == 'listfields':
 	# Print all the possible field(s) that can be requested, remove blacklisted fields
 	maper = adba.aniDBmaper.AniDBMaper()
@@ -243,7 +249,8 @@ elif args.command == 'listfields':
 	validFields = sorted([field for field in allFields if field not in blacklistFields])
 	print("\n".join(validFields))
 
-connection.stayloggedin()
+if args.command in ['mylistadd', 'mylistdel', 'mylistaddwithfields', 'getfields']:
+	connection.stayloggedin()
 
 if args.out_file:
 	sys.stdout.close()

@@ -167,8 +167,8 @@ class Anime(aniDBabstractObject):
 		if not self.allAnimeXML:
 			self.allAnimeXML = self._read_animetitels_xml()
 
-		regex = re.compile('( \(\d{4}\))|[%s]' % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
-		#regex = re.compile('[%s]'  % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
+		regex = re.compile(r'( \(\d{4}\))|[%s]' % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
+		#regex = re.compile(r'[%s]'  % re.escape(string.punctuation)) # remove any punctuation and e.g. ' (2011)'
 		name = regex.sub('', name.lower())
 		lastAid = 0
 		for element in self.allAnimeXML.getiterator():
@@ -257,7 +257,8 @@ class Episode(aniDBabstractObject):
 			(self.ed2k, self.size) = self._calculate_file_stuff(self.filePath)
 
 		self.rawData = self.aniDB.file(fid=self.fid, size=self.size, ed2k=self.ed2k, aid=self.aid, aname=None, gid=None, gname=None, epno=self.epno, fmask=self.bitCodeF, amask=self.bitCodeA)
-		self._fill(self.rawData.datalines[0])
+		if self.rawData.codestr != "NO_SUCH_FILE":
+			self._fill(self.rawData.datalines[0])
 		self._build_names()
 		self.laoded = True
 
